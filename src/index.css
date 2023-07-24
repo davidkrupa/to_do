@@ -16,6 +16,8 @@
 
 * {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 .app__wrapper {
@@ -23,6 +25,7 @@
   justify-content: center;
   align-items: flex-start;
   gap: 1.5rem;
+  width: 90%;
   max-width: 800px;
   margin: 5rem auto 0;
 }
@@ -30,7 +33,6 @@
 @media screen and (max-width: 700px) {
   .app__wrapper {
     flex-direction: column;
-    width: 90%;
   }
 }
 
@@ -38,6 +40,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 2;
+  width: 67%;
   gap: 1.5rem;
   padding: 1.5rem;
   min-height: 300px;
@@ -57,6 +60,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  width: 33%;
   gap: 1rem;
 }
 
@@ -66,7 +70,7 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    /* flex-wrap: wrap; */
+    flex-wrap: wrap;
   }
 }
 
@@ -75,6 +79,7 @@
   padding: 1rem;
   border-radius: 0.5em;
   transition: 0.4s ease-in-out;
+  position: relative;
 }
 
 .note__container:hover,
@@ -88,6 +93,35 @@
     flex-basis: 150px;
     max-width: 45%;
   }
+}
+
+.saved-notes__container-title {
+  margin-bottom: 0.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.saved-notes__container-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid rgb(61, 61, 61);
+  display: none;
+}
+
+.saved-notes__container-note:hover .delete-btn {
+  display: block;
+  transition: opacity 0.3s linear 2s;
 }
 
 input {
