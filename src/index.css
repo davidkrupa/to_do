@@ -108,9 +108,9 @@
   white-space: nowrap;
 }
 
-.delete-btn {
+.delete-btn,
+.edit-btn {
   position: absolute;
-  top: 5px;
   right: 5px;
   width: 30px;
   height: 30px;
@@ -119,7 +119,16 @@
   display: none;
 }
 
-.saved-notes__container-note:hover .delete-btn {
+.delete-btn {
+  top: 5px;
+}
+
+.edit-btn {
+  bottom: 5px;
+}
+
+.saved-notes__container-note:hover .delete-btn,
+.saved-notes__container-note:hover .edit-btn {
   display: block;
   transition: opacity 0.3s linear 2s;
 }
@@ -147,4 +156,9 @@ textarea {
 input:focus,
 textarea:focus {
   border: 2px solid #242424;
+}
+
+.save-btn {
+  margin: 0 auto;
+  padding: 0.5em 1em;
 }

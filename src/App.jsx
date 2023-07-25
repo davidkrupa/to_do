@@ -4,6 +4,9 @@ function App() {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [savedNotes, setSavedNotes] = useState([]);
+  const [noteToEditIndex, setNoteToEditIndex] = useState(null);
+
+  console.log(noteToEditIndex);
 
   console.log(savedNotes);
 
@@ -16,15 +19,32 @@ function App() {
   };
 
   const handleSave = () => {
-    setSavedNotes([...savedNotes, { title, text }]);
+    if (title.trim() === "" || text.trim() === "") return;
+    if (noteToEditIndex != null) {
+      setSavedNotes((prev) =>
+        prev.map((note, index) => {
+          if (index === noteToEditIndex) return { title, text };
+          else return note;
+        })
+      );
+    } else {
+      setSavedNotes([...savedNotes, { title, text }]);
+    }
     setTitle("");
     setText("");
+    setNoteToEditIndex(null);
   };
 
   const handleDelete = (id) => {
     const savedNotesCopy = [...savedNotes];
     savedNotesCopy.splice(id, 1);
     setSavedNotes(savedNotesCopy);
+  };
+
+  const handleEdit = (id) => {
+    setTitle(savedNotes[id].title);
+    setText(savedNotes[id].text);
+    setNoteToEditIndex(id);
   };
 
   return (
@@ -46,7 +66,9 @@ function App() {
             handleTextChange(e);
           }}
         />
-        <button onClick={() => handleSave()}>Save Note</button>
+        <button type="button" className="save-btn" onClick={() => handleSave()}>
+          Save Note
+        </button>
       </div>
       <div className="saved-notes__container">
         {savedNotes?.map((note, index) => (
@@ -55,6 +77,9 @@ function App() {
             <p className="saved-notes__container-text">{note.text}</p>
             <button className="delete-btn" onClick={() => handleDelete(index)}>
               X
+            </button>
+            <button className="edit-btn" onClick={() => handleEdit(index)}>
+              E
             </button>
           </div>
         ))}
