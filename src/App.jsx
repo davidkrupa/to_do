@@ -6,10 +6,6 @@ function App() {
   const [savedNotes, setSavedNotes] = useState([]);
   const [noteToEditIndex, setNoteToEditIndex] = useState(null);
 
-  console.log(noteToEditIndex);
-
-  console.log(savedNotes);
-
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -47,6 +43,26 @@ function App() {
     setNoteToEditIndex(id);
   };
 
+  const handleMoveUp = (id) => {
+    setSavedNotes((prev) =>
+      prev.map((note, index) => {
+        if (index === id - 1) return savedNotes[id];
+        else if (index === id) return savedNotes[id - 1];
+        else return note;
+      })
+    );
+  };
+
+  const handleMoveDown = (id) => {
+    setSavedNotes((prev) =>
+      prev.map((note, index) => {
+        if (index === id + 1) return savedNotes[id];
+        else if (index === id) return savedNotes[id + 1];
+        else return note;
+      })
+    );
+  };
+
   return (
     <div className="app__wrapper">
       <div className="note__container">
@@ -72,15 +88,32 @@ function App() {
       </div>
       <div className="saved-notes__container">
         {savedNotes?.map((note, index) => (
-          <div className="saved-notes__container-note" key={index}>
+          <div
+            className="saved-notes__container-note"
+            key={index}
+            onClick={() => handleEdit(index)}
+          >
             <h3 className="saved-notes__container-title">{note.title}</h3>
             <p className="saved-notes__container-text">{note.text}</p>
             <button className="delete-btn" onClick={() => handleDelete(index)}>
               X
             </button>
-            <button className="edit-btn" onClick={() => handleEdit(index)}>
-              E
-            </button>
+            {index > 0 && (
+              <button
+                className="move-up-btn"
+                onClick={() => handleMoveUp(index)}
+              >
+                ↑
+              </button>
+            )}
+            {index < savedNotes.length - 1 && (
+              <button
+                className={index !== 0 ? "move-down-btn" : "move-up-btn"}
+                onClick={() => handleMoveDown(index)}
+              >
+                ↓
+              </button>
+            )}
           </div>
         ))}
       </div>
