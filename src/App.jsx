@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [savedNotes, setSavedNotes] = useState([]);
   const [noteToEditIndex, setNoteToEditIndex] = useState(null);
+
+  useEffect(() => {
+    const notesFromLocalStorage = JSON.parse(localStorage.getItem("myNotes"));
+    if (notesFromLocalStorage) {
+      setSavedNotes(notesFromLocalStorage);
+    }
+  }, []);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -16,25 +23,30 @@ function App() {
 
   const handleSave = () => {
     if (title.trim() === "" || text.trim() === "") return;
+
+    let updatedNotes;
+
     if (noteToEditIndex != null) {
-      setSavedNotes((prev) =>
-        prev.map((note, index) => {
-          if (index === noteToEditIndex) return { title, text };
-          else return note;
-        })
-      );
+      updatedNotes = savedNotes.map((note, index) => {
+        if (index === noteToEditIndex) return { title, text };
+        else return note;
+      });
     } else {
-      setSavedNotes([...savedNotes, { title, text }]);
+      updatedNotes = [...savedNotes, { title, text }];
     }
+
+    setSavedNotes(updatedNotes);
     setTitle("");
     setText("");
     setNoteToEditIndex(null);
+    localStorage.setItem("myNotes", JSON.stringify(updatedNotes));
   };
 
   const handleDelete = (id) => {
     const savedNotesCopy = [...savedNotes];
     savedNotesCopy.splice(id, 1);
     setSavedNotes(savedNotesCopy);
+    localStorage.setItem("myNotes", JSON.stringify(savedNotesCopy));
   };
 
   const handleEdit = (id) => {
